@@ -1,8 +1,5 @@
-﻿    using Photon.Pun;
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,11 +16,8 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
     public void StartGame()
     {
-
-
         LoadLevels();
         runningLevel = levels[currentLevel];
         runningLevel.LoadLevel();
@@ -39,7 +33,7 @@ public class GameManager : MonoBehaviour
             currentLevel++;
             if (currentLevel == levels.Count)
             {
-               
+
                 GameObject.Find("MainCanvasWPopUps").GetComponent<PopUp>().SetPopUP("End of Game", "Congratulations you found the treassure", "Close");
 
 
@@ -51,7 +45,7 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        
+
     }
 
 

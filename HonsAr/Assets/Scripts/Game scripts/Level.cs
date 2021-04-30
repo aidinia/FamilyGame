@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using UnityEngine.UI;
 
 public class Level : MonoBehaviour
@@ -18,7 +17,7 @@ public class Level : MonoBehaviour
     public static bool pass = false;
     int hintIndex = 0;
 
-    public static Dictionary<string,GameObject> currentItems = new Dictionary<string, GameObject>();
+    public static List<string> currentItems = new List<string>();
 
     public Level(string lvlNm, List<string> items, List<string> hintList)
     {
@@ -33,7 +32,7 @@ public class Level : MonoBehaviour
         return pass;
     }
 
-  
+
 
     public List<string> getHint()
     {
@@ -42,16 +41,17 @@ public class Level : MonoBehaviour
         {
             listOfHints.Add(hints[i]);
         }
-        if (hintIndex < hints.Count-1)
+        if (hintIndex < hints.Count - 1)
         {
             hintIndex++;
         }
-        GameObject.Find("DebugCanvas").GetComponent<Text>().text += $"{listOfHints} \n";
+     //   GameObject.Find("DebugCanvas").GetComponent<Text>().text += $"{listOfHints} \n";
 
         return listOfHints;
     }
 
-    public List<string> getItems() {
+    public List<string> getItems()
+    {
         return this.items;
     }
 
@@ -68,20 +68,21 @@ public class Level : MonoBehaviour
 
     public void LoadLevel()
     {
-       
-        
-        foreach(string itemName in items)
-        {
-            currentItems.Add(itemName, GameObject.Find(itemName));
-        }
 
-            PhotonNetwork.LoadLevel(lvlName);
-       
-        
+        //Load Scene
+        PhotonNetwork.LoadLevel(lvlName);   
 
+        // Load Items
+            foreach (string itemName in items)
+            {
+            if (currentItems.IndexOf(itemName) <0)
+                {
+                    currentItems.Add(itemName);
+                }
+            }
+
+        //Load hints
         GameObject.Find("MainCanvasWPopUps").GetComponent<PopUp>().SetHints(getHint());
-
-
 
     }
 
@@ -90,7 +91,7 @@ public class Level : MonoBehaviour
         foreach (var item in items)
         {
             Destroy(GameObject.Find(item));
-           
+
         }
     }
 

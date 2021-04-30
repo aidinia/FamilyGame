@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 
@@ -19,7 +17,7 @@ public class LightValues : MonoBehaviour
     void Update()
     {
         text.text = camManager.currentLightEstimation.ToString();
-       
-        
+
+
     }
 }

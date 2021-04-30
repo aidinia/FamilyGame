@@ -1,9 +1,5 @@
 ﻿#if UNITY_EDITOR
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +8,7 @@ namespace UnityBase
     [InitializeOnLoad]
     public class TimeTrackerTriggerUnityEditorKeystrokes
     {
-        private static DateTime lastTime =DateTime.MinValue;
+        private static DateTime lastTime = DateTime.MinValue;
         static TimeTrackerTriggerUnityEditorKeystrokes()
         {
             System.Reflection.FieldInfo info = typeof(EditorApplication).GetField("globalEventHandler", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);

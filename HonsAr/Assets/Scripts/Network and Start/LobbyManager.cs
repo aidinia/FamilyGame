@@ -1,34 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
-using UnityEditor;
 
 public class LobbyManager : MonoBehaviour
 {
     public InputField nameInput;
     public Button createRoom;
     public Button joinRoom;
-
-
-
-    public int index = 0;
-    Object[] guids2;
     private string roomName;
 
 
-    private void Awake()
-    {
-        // Load icons
-        guids2 = Resources.LoadAll("ARISAN/100 Alchemy item icons-free", typeof(Sprite));
-    }
     private void Start()
     {
 
         while (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            GameObject.Find("MainCanvasWPopUps").GetComponent<PopUp>().SetPopUP("Error", "Connection error, please check your internet connection","Close");
+            GameObject.Find("MainCanvasWPopUps").GetComponent<PopUp>().SetPopUP("Error", "Connection error, please check your internet connection", "Close");
 
         }
 
@@ -53,20 +40,6 @@ public class LobbyManager : MonoBehaviour
         PhoNetworkManager.instance.JoindRoom(roomName);
     }
 
-
-    public void ChangeIcon()
-    {
-        index++;
-        Debug.Log($"Index is {index} and icons are {guids2.Length}");
-        if (index == guids2.Length)
-        {
-            index = 0;
-        }
-        var icon = guids2[index];
-        GameObject thisPlayer = GameObject.Find("LocalPlayer");
-        thisPlayer.GetComponent<Image>().sprite = (Sprite)icon;
-    }
-
     public static void ChangeMenu(bool starter)
     {
 
@@ -75,7 +48,7 @@ public class LobbyManager : MonoBehaviour
         roomName.text = PhotonNetwork.CurrentRoom.Name;
 
         var roomPlayers = GameObject.Find("NumOfPlayers").GetComponent<Text>();
-      //  roomPlayers.GetComponent<PhotonView>().RPC("UpdatePlayers", RpcTarget.All, PhotonNetwork.CurrentRoom.PlayerCount.ToString());
+        //  roomPlayers.GetComponent<PhotonView>().RPC("UpdatePlayers", RpcTarget.All, PhotonNetwork.CurrentRoom.PlayerCount.ToString());
 
         var startGameButton = GameObject.Find("StartGame").GetComponent<Button>();
 
@@ -104,32 +77,38 @@ public class LobbyManager : MonoBehaviour
         playerHolder.GetComponentInChildren<Text>().text = GameObject.Find("LocalPlayerName").GetComponent<InputField>().text;
 
     }
-    public static void InitiatePlayer(){
+    public static void InitiatePlayer()
+    {
 
-    
+
         var currentPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-      //  var RoomLobby = GameObject.Find("RoomLobby").GetComponent<Canvas>();
-        var playerHolder = GameObject.Find("PlayerHolder");
 
-        var thisPlayer = PhotonNetwork.Instantiate("Player00" + currentPlayers, playerHolder.transform.position, playerHolder.transform.rotation);
-        thisPlayer.transform.parent = playerHolder.transform.parent;
-        GameObject.Destroy(playerHolder);
-        var roomPlayers = GameObject.Find("NumOfPlayers").GetComponent<Text>();
-        roomPlayers.text = $"Current players: {currentPlayers}";
-      //  roomPlayers.RPC("UpdatePlayers", RpcTarget.All, currentPlayers.ToString());
+       
+        var roomPlayers = GameObject.Find("NumOfPlayers");
+        var PV = PhotonView.Find(3);
+       // GameObject.Find("TextDraw").GetComponent<Text>().text = $"pv {PV}";
+
+        PV.RPC("UpdatePlayers", RpcTarget.All, currentPlayers.ToString());
+
+
+     //   GameObject.Find("AR Session Origin (1)").GetComponent<Draw>().enabled = true;
     }
 
     public static void StartGame()
     {
-        GameManager.instance.StartGame();//.LoadLevel("Planets");
-        
+        GameManager.instance.StartGame();
+
     }
 
     [PunRPC]
-    public void UpdatePlayers(string currentPlayers)
+    private void UpdatePlayers(string currentPlayers)
     {
+
+        Debug.Log(currentPlayers);
         var roomPlayers = GameObject.Find("NumOfPlayers").GetComponent<Text>();
         roomPlayers.text = "Current players: " + currentPlayers;
+
+
 
     }
 }

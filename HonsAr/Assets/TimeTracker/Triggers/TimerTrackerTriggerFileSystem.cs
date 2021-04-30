@@ -1,10 +1,5 @@
 ﻿#if UNITY_EDITOR
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 
 namespace UnityBase
@@ -19,7 +14,7 @@ namespace UnityBase
         static FileSystemWatcher watcher;
         static TimerTrackerTriggerFileSystem()
         {
-            if(watcher != null)
+            if (watcher != null)
             {
                 return;
             }
@@ -47,7 +42,7 @@ namespace UnityBase
                 // Begin watching.
                 watcher.EnableRaisingEvents = true;
 
-               
+
             }
         }
 

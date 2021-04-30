@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -46,7 +44,7 @@ namespace UnityBase
         {
             this.titleContent = new GUIContent("Time Tracker");
         }
-        
+
         [MenuItem("Window/Time Tracker")]
         public static void ShowWindow()
         {
@@ -112,7 +110,7 @@ namespace UnityBase
                     TimeTracker.Settings.MaximumMinutesBetweenTriggers = maximumTimeBetweenTriggers;
                     TimeTracker.SaveSettings();
                 }
-            }        
+            }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -341,7 +339,7 @@ namespace UnityBase
             {
                 EditorGUI.indentLevel++;
 
-               Int32.TryParse(  EditorGUILayout.TextField("Last x Days", numberOfDays.ToString()), out numberOfDays);
+                Int32.TryParse(EditorGUILayout.TextField("Last x Days", numberOfDays.ToString()), out numberOfDays);
                 var timePeriodTotal = new TimeSpan(TimeTracker.TimeTrackerInfo.DailyTasks.Select(x => x.TimeSpendOnTask).Reverse().Take(numberOfDays).Sum(x => x));
                 EditorGUILayout.LabelField("Days: " + timePeriodTotal.Days);
                 EditorGUILayout.LabelField("Hours: " + timePeriodTotal.Hours);

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.google.ar.core.arfoundation.extensions": "file:C:/Users/PariaH/Documents/arcore-unity-extensions-1.22.0/arcore-unity-extensions-1.22.0",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ide.rider": "1.1.4",
     "com.unity.ide.vscode": "1.2.3",

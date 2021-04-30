@@ -1,39 +1,37 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopUp : MonoBehaviour {
+public class PopUp : MonoBehaviour
+{
 
-   public List<string> hints = new List<string>() { "Wait for all the players to enter the game before starting" };
+    public List<string> hints = new List<string>() { "Wait for all the players to enter the game before starting", "some hint 2", "hint 3" };
 
-  public GameObject PopUpStandar;
-  public GameObject PopUpOptions;
-  public GameObject PopUpHints;
-  public GameObject TopMenu;
+    public GameObject PopUpStandar;
+    public GameObject PopUpOptions;
+    public GameObject PopUpHints;
+    public GameObject TopMenu;
 
     private int hintIndex = 0;
 
- 
     //-------------------------------STandar
     public void SetPopUP(string title, string message, string button)
     {
         PopUpStandar.SetActive(true);
         GameObject.Find("popUpTitle").GetComponent<Text>().text = title;
         GameObject.Find("popUpContent").GetComponent<Text>().text = message;
-        GameObject.Find("PopUpButton").GetComponent<Text>().text = button;
-
     }
     public void ClosePopUp()
     {
-        PopUpStandar.SetActive(false);
+        GameObject.Find("PopUp").SetActive(false);
     }
 
     public void OpenPopUp()
     {
         PopUpStandar.SetActive(true);
 
-    
+
     }
 
     //---------------------------HInts
@@ -43,28 +41,35 @@ public class PopUp : MonoBehaviour {
     }
 
     public void SetUpPopUpHint()
-    { 
-      if(hintIndex == 0)
-        {
-            GameObject.Find("ButtonPrevHint").GetComponent<Button>().interactable = false;
-        } else  {
-            GameObject.Find("ButtonPrevHint").GetComponent<Button>().interactable = true;
-        }  
+    {
 
-      if(hintIndex == hints.Count - 1)
+        if (hintIndex == 0)
         {
-            GameObject.Find("ButtonNextHint").GetComponent<Button>().interactable = false;
 
-        } else {
-            GameObject.Find("ButtonNextHint").GetComponent<Button>().interactable = true;
+            PopUpHints.GetComponentsInChildren<Button>()[2].interactable = false;
 
         }
-        Debug.Log($"buttons  ok {hints}");
-       
-        GameObject.Find("currentHint").GetComponent<Text>().text = $"{hintIndex+1}";
+        else
+        {
+            PopUpHints.GetComponentsInChildren<Button>()[2].interactable = true;
+        }
+
+        if (hintIndex == hints.Count - 1)
+        {
+            PopUpHints.GetComponentsInChildren<Button>()[1].interactable = false;
+
+        }
+        else
+        {
+            PopUpHints.GetComponentsInChildren<Button>()[1].interactable = true;
+
+        }
+
+        GameObject.Find("currentHint").GetComponent<Text>().text = $"{hintIndex + 1}";
         GameObject.Find("totalHints").GetComponent<Text>().text = $"/ {hints.Count}";
+
         GameObject.Find("popUpContentHints").GetComponent<Text>().text = hints[hintIndex];
-        GameObject.Find("DebugCanvas").GetComponent<Text>().text += $"{hints[hintIndex]} \n";
+
 
     }
 
@@ -77,20 +82,23 @@ public class PopUp : MonoBehaviour {
     public void PreviousHint()
     {
         hintIndex--;
+
         SetUpPopUpHint();
+
     }
 
     public void OpenPopUpHint()
     {
+        PopUpHints.SetActive(true);
 
         SetHints(GameManager.runningLevel.getHint());
-        PopUpHints.SetActive(true);
         SetUpPopUpHint();
     }
 
 
-    public void SetHints(List<string> hintsFromLevel) {
-    
+    public void SetHints(List<string> hintsFromLevel)
+    {
+
 
         this.hints = hintsFromLevel;
     }
@@ -131,13 +139,13 @@ public class PopUp : MonoBehaviour {
         // }
         TopMenu.SetActive(true);
 
-    
+
     }
 
     public void MenuButton()
     {
         var topPosition = TopMenu.GetComponent<RectTransform>();
-       if(!TopMenu.activeSelf)
+        if (!TopMenu.activeSelf)
         {
             OpenMenu();
         }
@@ -147,6 +155,6 @@ public class PopUp : MonoBehaviour {
         }
     }
 
-   
+
 
 }

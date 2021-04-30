@@ -1,9 +1,5 @@
 ﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviourPun
 {
@@ -18,7 +14,7 @@ public class PlayerMove : MonoBehaviourPun
         this.transform.SetParent(canvas.transform);
         var playersCanvas = canvas.transform;
         var placeInX = ((playersCanvas.GetComponent<RectTransform>().rect.width / 4) + this.GetComponent<RectTransform>().rect.width / 2) * currentPlayers;
-      
+
 
         Debug.Log($"Canvas {playersCanvas.position.x} and place in X {placeInX}");
         Vector3 slot = new Vector3(placeInX, playersCanvas.position.y, playersCanvas.position.z);
@@ -35,14 +31,14 @@ public class PlayerMove : MonoBehaviourPun
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 startPos = Input.GetTouch(0).position;
-               
+
             }
 
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 if (photonView.IsMine)
                 {
-                    if (Input.GetTouch(0).position.x > startPos.x + 25 )
+                    if (Input.GetTouch(0).position.x > startPos.x + 25)
                     {
                         this.transform.position = this.transform.position + new Vector3(10, 0, 0);
                     }
@@ -62,7 +58,7 @@ public class PlayerMove : MonoBehaviourPun
             }
         }
 
-        if(Input.GetKeyDown(0) == true)
+        if (Input.GetKeyDown(0) == true)
         {
             if (photonView.IsMine)
             {

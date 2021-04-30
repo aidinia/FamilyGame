@@ -2,52 +2,57 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Android;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Planet : MonoBehaviour
 {
 
-    public float lat = 56.465488f;
-    public float lon = -2.991341f;
+    public float lat = 51.503926f;
+    public float lon = -0.11748f;
 
     public static int planets = 0;
-
-   // public Camera cam;
+    // public Camera cam;
 
     // Start is called before the first frame update
     void Awake()
     {
 
-        //while (!Input.location.isEnabledByUser)
-        //{
-        //    Permission.RequestUserPermission(Permission.CoarseLocation);
-        //}
-        //StartCoroutine(StartLocation());
+        while (!Input.location.isEnabledByUser)
+        {
+            Permission.RequestUserPermission(Permission.CoarseLocation);
+        }
+        StartCoroutine(StartLocation());
 
         var planetName = this.name.Replace("(Clone)", "");
-            PlanetName planet = (PlanetName)Enum.Parse(typeof(PlanetName), planetName.ToUpper());
-            Vector3 planetLocation = CelestialCoordinates.CalculateHorizontalCoordinatesPlanets(lat, lon, planet, DateTime.Now);
+        PlanetName planet = (PlanetName)Enum.Parse(typeof(PlanetName), planetName.ToUpper());
+        Vector3 planetLocation = CelestialCoordinates.CalculateHorizontalCoordinatesPlanets(lat, lon, planet, DateTime.Now);
+      
+        Vector3 cartesianLocation = Quaternion.Euler(-planetLocation.x, planetLocation.y, 0) * new Vector3(0, 0, planetLocation.z);
 
-            float x = (float)(planetLocation.z * Math.Cos(planetLocation.x) * Math.Cos(planetLocation.y));
-            float y = (float)(planetLocation.z * Math.Cos(planetLocation.x) * Math.Sin(planetLocation.y));
-            float z = (float)(planetLocation.z * Math.Sin(planetLocation.x));
 
-            Vector3 cartesianLocation = new Vector3(x, y, z);
-            while (Vector3.Distance(cartesianLocation, Vector3.zero) > 15)
-            {
-                cartesianLocation = Vector3.MoveTowards(cartesianLocation, Vector3.zero, 1);
-            }
-              this.transform.position = cartesianLocation;
+        //float x = (float)(planetLocation.z * Math.Cos(planetLocation.x) * Math.Cos(planetLocation.y));
+        //float y = (float)(planetLocation.z * Math.Cos(planetLocation.x) * Math.Sin(planetLocation.y));
+        //float z = (float)(planetLocation.z * Math.Sin(planetLocation.x));
 
+        //Vector3 cartesianLocation = new Vector3(x, y, z);
+        while (Vector3.Distance(cartesianLocation, Vector3.zero) > 1.5)
+        {
+            cartesianLocation = Vector3.MoveTowards(cartesianLocation, Vector3.zero, 1);
+        }
+        this.transform.position = cartesianLocation;
+
+
+        // ---------------This doesn't have to be on every place as the planets are loaded in each phone... ?
         GameObject.Find("DebugCanvas").GetComponent<Text>().text += $"Planet {planet} loaded at {cartesianLocation} \n";
 
 
     }
+    private void Start()
+    {
 
+    }
     private void Update()
     {
         //if(Input.location.status != LocationServiceStatus.Running)
@@ -55,6 +60,15 @@ public class Planet : MonoBehaviour
         //    StartCoroutine(StartLocation());
 
         //}
+    }
+
+
+    [PunRPC]
+    private void RemovePlanet(string planet)
+    {
+        Debug.Log(planet);
+        Level.currentItems.Remove(planet);
+
     }
 
     IEnumerator StartLocation()
@@ -65,20 +79,20 @@ public class Planet : MonoBehaviour
         //    debText.text = "Not enabled";
         //    yield break;
         //}
-        
+
         Input.location.Start();
         int maxWait = 20;
-        while(Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
         {
             yield return new WaitForSeconds(1);
             maxWait--;
         }
-        if(maxWait <= 0)
+        if (maxWait <= 0)
         {
             yield break;
         }
 
-        if(Input.location.status == LocationServiceStatus.Failed)
+        if (Input.location.status == LocationServiceStatus.Failed)
         {
             yield break;
         }

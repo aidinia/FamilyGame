@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace UnityBase
@@ -40,13 +38,13 @@ namespace UnityBase
             {
                 if (AllTasks.Any())
                 {
-                    if(CurrentTaskIndex >= AllTasks.Count || CurrentTaskIndex < 0)
+                    if (CurrentTaskIndex >= AllTasks.Count || CurrentTaskIndex < 0)
                     {
                         CurrentTaskIndex = 0;
                     }
                     return AllTasks[CurrentTaskIndex];
                 }
-                return new TimeTrackerTask() { TaskName = "Default"};
+                return new TimeTrackerTask() { TaskName = "Default" };
             }
             set
             {
@@ -176,6 +174,6 @@ namespace UnityBase
             return foundTask;
         }
 
-     
+
     }
 }

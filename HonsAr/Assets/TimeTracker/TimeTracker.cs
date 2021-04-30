@@ -1,11 +1,5 @@
 ﻿
 #if UNITY_EDITOR
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,7 +30,7 @@ namespace UnityBase
         /// It uses the product name, so if you change it your data is lost
         /// </summary>
         private static readonly string TimeTrackerSettingsPlayerPrefKey = PlayerSettings.productName + "TimeTrackerSettings";
-   
+
         //Lock object for multithreading. Probably not needed because of unity single thread approach
         //More there to keep it save for the future
         private static object trackerInfoLockObject = new object();
@@ -47,7 +41,7 @@ namespace UnityBase
         /// </summary>
         public static TimeTrackerSettings Settings
         {
-            get 
+            get
             {
                 if (_settings == null)
                 {
@@ -76,7 +70,7 @@ namespace UnityBase
         {
             lock (trackerSettingsLockObject)
             {
-                PlayerPrefs.SetString(TimeTrackerSettingsPlayerPrefKey, TimeTrackerSerializationHelper.Serialize(Settings)); 
+                PlayerPrefs.SetString(TimeTrackerSettingsPlayerPrefKey, TimeTrackerSerializationHelper.Serialize(Settings));
                 PlayerPrefs.Save();
             }
         }
@@ -87,11 +81,11 @@ namespace UnityBase
         /// </summary>
         public static TimeTrackerInfo TimeTrackerInfo
         {
-            get 
+            get
             {
                 if (_timeTrackerInfo == null)
                 {
-                
+
                     lock (trackerInfoLockObject)
                     {
                         try
@@ -106,9 +100,9 @@ namespace UnityBase
                             PlayerPrefs.Save();
                         }
                     }
-                    
+
                 }
-                return _timeTrackerInfo; 
+                return _timeTrackerInfo;
             }
         }
         /// <summary>
@@ -123,12 +117,12 @@ namespace UnityBase
             }
         }
 
-   
 
-       /// <summary>
-       /// Checks if the last trigger and this trigger is less than 5 minutes apart (configurable)
-       /// If it is it adds the time to the Project and Task you are working on.
-       /// </summary>
+
+        /// <summary>
+        /// Checks if the last trigger and this trigger is less than 5 minutes apart (configurable)
+        /// If it is it adds the time to the Project and Task you are working on.
+        /// </summary>
         public static void OnTrigger()
         {
             if (TimeTrackerInfo.StopWatchRunning)

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
-using UnityEditor;
 
 public class PhoNetworkManager : MonoBehaviourPunCallbacks
 {
@@ -13,7 +12,7 @@ public class PhoNetworkManager : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-        if(instance != null && instance != this)
+        if (instance != null && instance != this)
         {
             gameObject.SetActive(false);
 
@@ -24,7 +23,7 @@ public class PhoNetworkManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameObject);
         }
     }
-    
+
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
@@ -45,6 +44,7 @@ public class PhoNetworkManager : MonoBehaviourPunCallbacks
         find.interactable = true;
     }
 
+   
     public override void OnCreatedRoom()
     {
         //        base.OnCreatedRoom();
@@ -68,9 +68,9 @@ public class PhoNetworkManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom(string name)
     {
-        PhotonNetwork.CreateRoom(name);
+       
+            PhotonNetwork.CreateRoom(name);
 
-        Debug.Log($"Created room name is {name}");
 
     }
 
@@ -79,5 +79,5 @@ public class PhoNetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(name);
     }
 
-   
+
 }
